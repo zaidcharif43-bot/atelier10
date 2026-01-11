@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Trail - Logo et Identité Visuelle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f8f9fa;
+            font-family: 'Montserrat', sans-serif;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c5530;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            font-weight: 700;
+        }
+        
+        .logo-section {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .main-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-icon {
+            font-size: 4rem;
+            color: #2c5530;
+            filter: drop-shadow(2px 2px 4px rgba(44, 85, 48, 0.3));
+        }
+        
+        .logo-text {
+            font-family: 'Roboto Slab', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #2c5530;
+            line-height: 0.9;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.9rem;
+            color: #e67e22;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .color-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .color-sample {
+            width: 100%;
+            height: 100px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .primary { background: #2c5530; }
+        .secondary { background: #e67e22; }
+        .accent { background: #27ae60; }
+        .neutral { background: #34495e; }
+        .light { background: #ecf0f1; border: 1px solid #bdc3c7; }
+        
+        .color-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .color-hex {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .usage-examples {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .example-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .mini-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        
+        .mini-logo .icon {
+            font-size: 1.5rem;
+            color: #2c5530;
+        }
+        
+        .mini-logo .text {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2c5530;
+        }
+        
+        .example-text {
+            color: #2c3e50;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .main-logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .logo-text {
+                font-size: 2.5rem;
+            }
+            
+            .logo-icon {
+                font-size: 3rem;
+            }
+            
+            .example-row {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mountain Trail - Identité Visuelle</h1>
+        
+        <!-- Logo Principal -->
+        <div class="logo-section">
+            <div class="main-logo">
+                <div class="logo-icon">⛰️</div>
+                <div>
+                    <div class="logo-text">MOUNTAIN TRAIL</div>
+                    <div class="logo-subtitle">ÉQUIPEMENTS OUTDOOR</div>
+                </div>
+            </div>
+            <p style="color: #7f8c8d; margin-top: 1rem; font-style: italic;">
+                "Votre compagnon pour toutes les aventures en montagne"
+            </p>
+        </div>
+        
+        <!-- Palette de Couleurs -->
+        <h2 style="text-align: center; color: #2c5530; margin-bottom: 2rem; font-size: 2rem;">Palette de Couleurs</h2>
+        <div class="color-palette">
+            <div class="color-card">
+                <div class="color-sample primary"></div>
+                <div class="color-name">Vert Montagne</div>
+                <div class="color-hex">#2c5530</div>
+                <small style="color: #7f8c8d;">Couleur principale - Nature, Fiabilité</small>
+            </div>
+            <div class="color-card">
+                <div class="color-sample secondary"></div>
+                <div class="color-name">Orange Aventure</div>
+                <div class="color-hex">#e67e22</div>
+                <small style="color: #7f8c8d;">Secondaire - Énergie, Action</small>
+            </div>
+            <div class="color-card">
+                <div class="color-sample accent"></div>
+                <div class="color-name">Vert Forêt</div>
+                <div class="color-hex">#27ae60</div>
+                <small style="color: #7f8c8d;">Accent - Fraîcheur, Croissance</small>
+            </div>
+            <div class="color-card">
+                <div class="color-sample neutral"></div>
+                <div class="color-name">Bleu Ardoise</div>
+                <div class="color-hex">#34495e</div>
+                <small style="color: #7f8c8d;">Texte - Stabilité, Professionnalisme</small>
+            </div>
+            <div class="color-card">
+                <div class="color-sample light"></div>
+                <div class="color-name">Blanc Neige</div>
+                <div class="color-hex">#ecf0f1</div>
+                <small style="color: #7f8c8d;">Fond - Pureté, Simplicité</small>
+            </div>
+        </div>
+        
+        <!-- Exemples d'utilisation -->
+        <div class="usage-examples">
+            <h2 style="text-align: center; color: #2c5530; margin-bottom: 2rem; font-size: 2rem;">Exemples d'Utilisation</h2>
+            
+            <div class="example-row">
+                <div class="mini-logo">
+                    <div class="icon">⛰️</div>
+                    <div class="text">MOUNTAIN TRAIL</div>
+                </div>
+                <div class="example-text">
+                    <strong>Header du site :</strong> Logo principal avec icône montagne et typographie Roboto Slab pour une impression de solidité et d'aventure.
+                </div>
+            </div>
+            
+            <div class="example-row">
+                <div style="background: #2c5530; color: white; padding: 10px 20px; border-radius: 5px; font-weight: 600;">
+                    Découvrir nos produits
+                </div>
+                <div class="example-text">
+                    <strong>Boutons principaux :</strong> Utilisation du vert montagne (#2c5530) pour les call-to-action importants, transmettant confiance et stabilité.
+                </div>
+            </div>
+            
+            <div class="example-row">
+                <div style="background: #e67e22; color: white; padding: 10px 20px; border-radius: 5px; font-weight: 600;">
+                    Offre spéciale !
+                </div>
+                <div class="example-text">
+                    <strong>Promotions et alertes :</strong> L'orange aventure (#e67e22) attire l'attention sur les offres spéciales et crée un sentiment d'urgence positive.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
