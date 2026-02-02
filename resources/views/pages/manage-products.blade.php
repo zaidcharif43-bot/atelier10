@@ -23,6 +23,24 @@
                 </div>
             @endif
 
+            {{-- Message de mise à jour --}}
+            @if($message = Session::get('successupdate'))
+                <div
+                    style="background: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 16px 20px; border-radius: 12px; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-check-circle" style="font-size: 1.2rem;"></i>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
+
+            {{-- Message de suppression --}}
+            @if($message = Session::get('successdelete'))
+                <div
+                    style="background: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 16px 20px; border-radius: 12px; margin-bottom: 30px; display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-check-circle" style="font-size: 1.2rem;"></i>
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
+
             <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                     <h2 style="font-family: 'Playfair Display', serif; margin: 0;">
@@ -79,16 +97,74 @@
                                                 style="font-weight: 700; color: #e94560;">{{ number_format($product->price, 2) }}€</span>
                                         </td>
                                         <td style="padding: 15px; text-align: center;">
-                                            <form action="{{ route('produits.delete', $product->id) }}" method="POST"
-                                                onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')"
-                                                style="display: inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    style="background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+                                            <div style="display: flex; gap: 8px; justify-content: center;">
+                                                {{-- Bouton Voir --}}
+                                                <a href="{{ route('produits.show.admin', $product->id) }}"
+                                                    style="background: #ffc107; color: white; border: none; padding: 8px 15px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s;"
+                                                    onmouseover="this.style.background='#e0a800'"
+                                                    onmouseout="this.style.background='#ffc107'">
+                                                    <i class="fas fa-eye"></i> Voir
+                                                </a>
+
+                                                {{-- Bouton Modifier --}}
+                                                <a href="{{ route('produits.edit', $product->id) }}"
+                                                    style="background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: all 0.3s;"
+                                                    onmouseover="this.style.background='#0056b3'"
+                                                    onmouseout="this.style.background='#007bff'">
+                                                    <i class="fas fa-edit"></i> Modifier
+                                                </a>
+
+                                                {{-- Bouton Supprimer avec modale --}}
+                                                <button type="button"
+                                                    style="background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 5px;"
+                                                    onmouseover="this.style.background='#c82333'"
+                                                    onmouseout="this.style.background='#dc3545'" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal-{{ $product->id }}">
                                                     <i class="fas fa-trash"></i> Supprimer
                                                 </button>
-                                            </form>
+                                            </div>
+
+                                            {{-- Modale de confirmation de suppression --}}
+                                            <div class="modal fade" id="deleteModal-{{ $product->id }}" tabindex="-1" role="dialog"
+                                                aria-labelledby="deleteModalLabel-{{ $product->id }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content" style="border-radius: 15px; overflow: hidden;">
+                                                        <div class="modal-header"
+                                                            style="background: #dc3545; color: white; border: none;">
+                                                            <h5 class="modal-title" id="deleteModalLabel-{{ $product->id }}">
+                                                                <i class="fas fa-exclamation-triangle"></i> Confirmation de
+                                                                suppression
+                                                            </h5>
+                                                            <button type="button" class="btn-close btn-close-white"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body" style="padding: 30px;">
+                                                            <p style="font-size: 1.1rem; margin-bottom: 15px;">
+                                                                Êtes-vous sûr de vouloir supprimer le produit :
+                                                            </p>
+                                                            <p style="font-weight: 700; color: #e94560; font-size: 1.2rem;">
+                                                                {{ $product->name }}
+                                                            </p>
+                                                            <p style="color: #666; margin-top: 15px;">
+                                                                Cette action est irréversible !
+                                                            </p>
+                                                        </div>
+                                                        <div class="modal-footer" style="border: none; padding: 20px 30px;">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                                <i class="fas fa-times"></i> Annuler
+                                                            </button>
+                                                            <form action="{{ route('produits.delete', $product->id) }}"
+                                                                method="POST" style="display: inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger">
+                                                                    <i class="fas fa-trash"></i> Supprimer définitivement
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

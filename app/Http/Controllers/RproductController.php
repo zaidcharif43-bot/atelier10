@@ -8,139 +8,132 @@ use Illuminate\Support\Facades\Storage;
 
 class RproductController extends Controller
 {
-    /**
-     * Afficher le formulaire d'ajout de produit.
-     * 
-     * @return \Illuminate\View\View
-     */
     public function create()
     {
-        // Récupérer les catégories existantes pour le select
         $categories = Produit::getCategories();
-
         return view('pages.addproduit', compact('categories'));
     }
 
-    /**
-     * Enregistrer un nouveau produit en base de données.
-     * 
-     * @param AddProductRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(AddProductRequest $request)
     {
-        // Valider les données
         $request->validated();
 
-        // Configuration Cloudinary
-        $cloudinary = new Cloudinary([
-            'cloud' => [
-                'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-                'api_key' => env('CLOUDINARY_API_KEY'),
-                'api_secret' => env('CLOUDINARY_API_SECRET'),
-            ],
-        ]);
-
-        // Upload de l'image vers Cloudinary
-        $imageUrl = null;
+        // Upload image LOCAL
+        $imagePath = null;
         if ($request->hasFile('image')) {
-            $result = $cloudinary->uploadApi()->upload(
-                $request->file('image')->getRealPath(),
-                [
-                    'folder' => 'ClothesZC/produits',
-                ]
-            );
-            $imageUrl = $result['secure_url'];
+            $imagePath = $request->file('image')->store('produits', 'public');
         }
 
-        // Traiter les features (convertir en tableau si c'est une chaîne)
+        // Features
         $features = null;
         if ($request->filled('features')) {
-            $features = array_map('trim', preg_split('/[,\n]+/', $request->input('features')));
+            $features = array_map('trim', preg_split('/[,\n]+/', $request->features));
         }
 
-        // Créer le produit
         $produit = new Produit();
-        $produit->name = $request->input('name');
-        $produit->categorie = $request->input('categorie');
-        $produit->price = $request->input('price');
-        $produit->old_price = $request->input('old_price');
-        $produit->image = $imageUrl;
-        $produit->rating = $request->input('rating') ?? 0;
-        $produit->reviews = $request->input('reviews') ?? 0;
-        $produit->description = $request->input('description');
+        $produit->name = $request->name;
+        $produit->categorie = $request->categorie;
+        $produit->price = $request->price;
+        $produit->old_price = $request->old_price;
+        $produit->image = $imagePath; // chemin local
+        $produit->rating = $request->rating ?? 0;
+        $produit->reviews = $request->reviews ?? 0;
+        $produit->description = $request->description;
         $produit->features = $features;
-        $produit->stock = $request->input('stock') ?? 0;
-        $produit->new = $request->has('new') ? true : false;
-        $produit->sale = $request->has('sale') ? true : false;
-
+        $produit->stock = $request->stock ?? 0;
+        $produit->new = $request->has('new');
+        $produit->sale = $request->has('sale');
         $produit->save();
 
-        // Rediriger vers la liste des produits
         return redirect()->route('produits.index')
             ->with('success', 'Le produit a été ajouté avec succès !');
     }
 
-    /**
-     * Afficher la page de gestion des produits.
-     * 
-     * @return \Illuminate\View\View
-     */
     public function manage()
     {
         $products = Produit::orderBy('created_at', 'desc')->paginate(10);
         return view('pages.manage-products', compact('products'));
     }
 
-    /**
-     * Supprimer un produit.
-     * 
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
+    public function show($id)
+    {
+        $product = Produit::findOrFail($id);
+        return view('pages.showproduct', compact('product'));
+    }
+
+    public function edit($id)
+    {
+        $product = Produit::findOrFail($id);
+        $categories = Produit::getCategories();
+        return view('pages.edit', compact('product', 'categories'));
+    }
+
+    public function update(AddProductRequest $request, $id)
+    {
+        $request->validated();
+        $product = Produit::findOrFail($id);
+
+        // Nouvelle image
+        if ($request->hasFile('image')) {
+            // supprimer ancienne image
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            $product->image = $request->file('image')->store('produits', 'public');
+        }
+
+        $features = null;
+        if ($request->filled('features')) {
+            $features = array_map('trim', preg_split('/[,\n]+/', $request->features));
+        }
+
+        $product->name = $request->name;
+        $product->categorie = $request->categorie;
+        $product->price = $request->price;
+        $product->old_price = $request->old_price;
+        $product->rating = $request->rating ?? 0;
+        $product->reviews = $request->reviews ?? 0;
+        $product->description = $request->description;
+        $product->features = $features;
+        $product->stock = $request->stock ?? 0;
+        $product->new = $request->has('new');
+        $product->sale = $request->has('sale');
+        $product->save();
+
+        return back()->with('successupdate', 'Article mis à jour avec succès.');
+    }
+
     public function destroy($id)
     {
         $product = Produit::findOrFail($id);
 
-        // Supprimer l'image si elle existe
-        if ($product->image && file_exists(public_path($product->image))) {
-            unlink(public_path($product->image));
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();
 
         return redirect()->route('produits.manage')
-            ->with('success', 'Le produit a été supprimé avec succès !');
+            ->with('successdelete', 'Article supprimé avec succès.');
     }
 
-    /**
-     * Afficher la page de nettoyage.
-     * 
-     * @return \Illuminate\View\View
-     */
     public function showCleanup()
     {
         $count = Produit::count();
         return view('pages.cleanup', compact('count'));
     }
 
-    /**
-     * Supprimer tous les produits.
-     * 
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function cleanup()
     {
         $products = Produit::all();
 
-        // Supprimer toutes les images
         foreach ($products as $product) {
-            if ($product->image && file_exists(public_path($product->image))) {
-                unlink(public_path($product->image));
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
             }
         }
 
-        // Supprimer tous les produits
         Produit::truncate();
 
         return redirect()->route('produits.cleanup.show')

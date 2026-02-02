@@ -28,6 +28,9 @@ Route::post('/produits/cleanup', [RproductController::class, 'cleanup'])->name('
 Route::get('/produits/manage', [RproductController::class, 'manage'])->name('produits.manage');
 Route::get('/produits/create', [RproductController::class, 'create'])->name('produits.create');
 Route::post('/produits/store', [RproductController::class, 'store'])->name('produits.store');
+Route::get('/produits/{id}/show', [RproductController::class, 'show'])->name('produits.show.admin');
+Route::get('/produits/{id}/edit', [RproductController::class, 'edit'])->name('produits.edit');
+Route::put('/produits/{id}', [RproductController::class, 'update'])->name('produits.update');
 Route::delete('/produits/{id}', [RproductController::class, 'destroy'])->name('produits.delete');
 
 // Routes dynamiques (doivent être APRÈS les routes spécifiques)
@@ -39,4 +42,11 @@ Route::get('/produit/{id}', [ProductController::class, 'show'])->name('produits.
 // ========================================
 Route::get('/categories', [ProduitController::class, 'index'])->name('categories.index');
 Route::get('/categories/{cat}', [ProduitController::class, 'getProductsByCategorie'])->name('categories.filter');
+
+// ========================================
+// Routes TP Atelier 10 - Application React
+// ========================================
+Route::get('/react-app', function () {
+    return view('react-app');
+})->name('react.app');
 

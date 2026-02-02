@@ -51,6 +51,33 @@ class Produit extends Model
     ];
 
     /**
+     * Les attributs à ajouter aux représentations du modèle
+     *
+     * @var array
+     */
+    protected $appends = ['image_url'];
+
+    /**
+     * Accesseur pour obtenir l'URL complète de l'image
+     *
+     * @return string|null
+     */
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return null;
+        }
+        
+        // Si l'image est une URL complète (commence par http), la retourner telle quelle
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+        
+        // Sinon, générer l'URL depuis le storage public
+        return asset('storage/' . $this->image);
+    }
+
+    /**
      * Récupérer les produits par catégorie
      *
      * @param string $categorie
